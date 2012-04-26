@@ -2,10 +2,10 @@ require 'rubygems'
 require 'bencode'
 require 'socket'
 require 'digest'
-require "cjdns-lib/version"
+require 'cjdns-lib/version'
 
 module Cjdns
-  module Lib
+  class Lib
 
     def initialize(options = {})
       options = { 'password' => nil, 'host' => 'localhost', 'port' => 11234 }.merge options
