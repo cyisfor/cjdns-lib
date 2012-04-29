@@ -8,7 +8,7 @@ module Cjdns
   class Lib
 
     def initialize(options = {})
-      options = { 'password' => nil, 'host' => 'localhost', 'port' => 11234 }.merge options
+      options = { 'host' => 'localhost', 'port' => 11234, 'password' => nil }.merge options
 
       @password = options['password']
       @socket = TCPSocket.open(options['host'], options['port'])
