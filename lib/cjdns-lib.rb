@@ -31,7 +31,7 @@ module Cjdns
     def ping_node(path, timeout = 5000)
       begin
         response = auth_send('RouterModule_pingNode', { 'path' => path, 'timeout' => timeout } )
-        rescue RuntimeError
+      rescue RuntimeError
         return false
       end
 
