@@ -121,12 +121,16 @@ module Cjdns
       # setup authenticated request if password given
       if @password
         cookie = get_cookie
+        return false unless cookie
+
+        txid = rand(10000000000).to_s
 
         request = {
           'q' => 'auth',
           'aq' => funcname,
           'hash' => Digest::SHA256.hexdigest(@password + cookie),
-          'cookie' => cookie
+          'cookie' => cookie,
+          'txid' => txid
         }
 
         request['args'] = args if args
@@ -138,11 +142,16 @@ module Cjdns
         request['args'] = args if args
       end
 
-      send(request)
+      response = send request
+      return response if response['txid'] == txid
+      false
     end
 
     def get_cookie
-      send('q' => 'cookie')['cookie']
+      txid = rand(10000000000).to_s
+      response = send('q' => 'cookie', 'txid' => txid)
+      return response['cookie'] if response['txid'] == txid
+      false
     end
 
     def send(request)
