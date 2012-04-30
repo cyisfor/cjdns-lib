@@ -24,20 +24,11 @@ module Cjdns
     end
 
     def memory
-      begin
-        return auth_send('memory')['bytes']
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('memory')['bytes']
     end
 
     def ping_node(path, timeout = 5000)
-      begin
-        response = auth_send('RouterModule_pingNode', { 'path' => path, 'timeout' => timeout } )
-      rescue RuntimeError
-        return false
-      end
-
+      response = auth_send('RouterModule_pingNode', { 'path' => path, 'timeout' => timeout } )
       return response['ms'] if response['result'] == 'pong'
       false
     end
@@ -46,11 +37,7 @@ module Cjdns
       page = 0
       routing_table = []
       begin
-        begin
-          response = auth_send('NodeStore_dumpTable', 'page' => page)
-        rescue RuntimeError
-          return false
-        end
+        response = auth_send('NodeStore_dumpTable', 'page' => page)
 
         # add received routing table
         routing_table = routing_table + response['routingTable']
@@ -63,59 +50,35 @@ module Cjdns
     end
 
     def ping_switch(path, data = 'x', timeout = 5000)
-      begin
-        response = auth_send('SwitchPinger_ping', { 'path' => path,
-                                                    'data' => data,
-                                                    'timeout' => timeout } )
-      rescue RuntimeError
-        return false
-      end
+      response = auth_send('SwitchPinger_ping', { 'path' => path,
+                                                  'data' => data,
+                                                  'timeout' => timeout } )
 
       return response['ms'] if response['result'] == 'pong'
       false
     end
 
     def lookup(address)
-      begin
-        return auth_send('RouterModule_lookup', { 'address' => address } )['result']
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('RouterModule_lookup', { 'address' => address } )
     end
 
     def authorized_passwords_add(password, auth_type = 1)
-      begin
-        return auth_send('AuthorizedPasswords_add', { 'password' => password,
-                                                      'authType' => auth_type } )
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('AuthorizedPasswords_add', { 'password' => password,
+                                                    'authType' => auth_type } )
     end
 
     def authorized_passwords_flush
-      begin
-        return auth_send('AuthorizedPasswords_flush')
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('AuthorizedPasswords_flush')
     end
 
     def scramble_keys(xor_value)
-      begin
-        return auth_send('UDPInterface_scrambleKeys', { 'xorValue' => xor_value } )
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('UDPInterface_scrambleKeys', { 'xorValue' => xor_value } )
     end
 
     def begin_connection(public_key, address, password = nil)
-      begin
-        return auth_send('UDPInterface_beginConnection', { 'publicKey' => public_key,
-                                                           'address' => address,
-                                                           'password' => password } )
-      rescue RuntimeError
-        return false
-      end
+      return auth_send('UDPInterface_beginConnection', { 'publicKey' => public_key,
+                                                         'address' => address,
+                                                         'password' => password } )
     end
 
 
@@ -174,7 +137,6 @@ module Cjdns
       response = response.bdecode
 
       puts "bdecoded reply: #{response.inspect}" if @debug
-      raise response['error'] if response['error']
       response
     end
   end
