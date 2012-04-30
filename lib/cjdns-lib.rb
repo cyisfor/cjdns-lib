@@ -125,8 +125,6 @@ module Cjdns
       # setup authenticated request if password given
       if @password
         cookie = get_cookie
-        return false unless cookie
-
         txid = rand(10000000000).to_s
 
         request = {
@@ -147,15 +145,15 @@ module Cjdns
       end
 
       response = send request
-      return response if response['txid'] == txid
-      false
+      raise 'wrong txid in reply' unless response['txid'] == txid
+      response 
     end
 
     def get_cookie
       txid = rand(10000000000).to_s
       response = send('q' => 'cookie', 'txid' => txid)
-      return response['cookie'] if response['txid'] == txid
-      false
+      raise 'wrong txid in reply' unless response['txid'] == txid
+      response['cookie']
     end
 
     def send(request)
