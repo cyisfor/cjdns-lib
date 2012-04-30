@@ -8,9 +8,12 @@ module Cjdns
   class Lib
 
     def initialize(options = {})
-      options = { 'host' => 'localhost', 'port' => 11234, 'password' => nil }.merge options
+      options = { 'host' => 'localhost', 'port' => 11234, 'password' => nil, 'debug' => false }.merge options
 
       @password = options['password']
+      @debug = options['debug']
+
+      puts "connecting to #{options['host']}:#{options['port']}" if @debug
       @socket = TCPSocket.open(options['host'], options['port'])
       raise "#{host}:#{port} doesn't appear to be a cjdns socket" unless ping_self
     end
@@ -144,7 +147,10 @@ module Cjdns
 
     def send(request)
       # clear socket
+      puts "flushing socket" if @debug
       @socket.flush
+
+      puts "sending request: #{request.inspect}" if @debug
       response = ''
       @socket.puts request.bencode
 
@@ -153,7 +159,10 @@ module Cjdns
         break if r.length < 1024
       end
 
+      puts "bencoded reply: #{response.inspect}" if @debug
       response = response.bdecode
+
+      puts "bdecoded reply: #{response.inspect}" if @debug
       raise response['error'] if response['error']
       response
     end
