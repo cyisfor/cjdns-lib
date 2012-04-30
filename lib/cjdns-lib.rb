@@ -46,7 +46,11 @@ module Cjdns
       page = 0
       routing_table = []
       begin
-        response = auth_send('NodeStore_dumpTable', 'page' => page)
+        begin
+          response = auth_send('NodeStore_dumpTable', 'page' => page)
+        rescue RuntimeError
+          return false
+        end
 
         # add received routing table
         routing_table = routing_table + response['routingTable']
@@ -83,7 +87,7 @@ module Cjdns
       begin
         return auth_send('AuthorizedPasswords_add', { 'password' => password,
                                                       'authType' => auth_type } )
-        rescue RuntimeError
+      rescue RuntimeError
         return false
       end
     end
@@ -91,7 +95,7 @@ module Cjdns
     def authorized_passwords_flush
       begin
         return auth_send('AuthorizedPasswords_flush')
-        rescue RuntimeError
+      rescue RuntimeError
         return false
       end
     end
@@ -99,7 +103,7 @@ module Cjdns
     def scramble_keys(xor_value)
       begin
         return auth_send('UDPInterface_scrambleKeys', { 'xorValue' => xor_value } )
-        rescue RuntimeError
+      rescue RuntimeError
         return false
       end
     end
@@ -109,7 +113,7 @@ module Cjdns
         return auth_send('UDPInterface_beginConnection', { 'publicKey' => public_key,
                                                            'address' => address,
                                                            'password' => password } )
-        rescue RuntimeError
+      rescue RuntimeError
         return false
       end
     end
