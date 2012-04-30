@@ -143,6 +143,8 @@ module Cjdns
     end
 
     def send(request)
+      # clear socket
+      @socket.flush
       response = ''
       @socket.puts request.bencode
 
