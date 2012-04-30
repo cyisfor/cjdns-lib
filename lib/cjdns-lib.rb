@@ -109,14 +109,14 @@ module Cjdns
       end
 
       response = send request
-      raise 'wrong txid in reply' unless response['txid'] == txid
+      raise 'wrong txid in reply' if response['txid'] and response['txid'] != txid
       response 
     end
 
     def get_cookie
       txid = rand(10000000000).to_s
       response = send('q' => 'cookie', 'txid' => txid)
-      raise 'wrong txid in reply' unless response['txid'] == txid
+      raise 'wrong txid in reply' if response['txid'] and response['txid'] != txid
       response['cookie']
     end
 
