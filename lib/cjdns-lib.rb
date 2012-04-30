@@ -85,10 +85,11 @@ module Cjdns
     private
 
     def auth_send(funcname, args = nil)
+      txid = rand(10000000000).to_s
+
       # setup authenticated request if password given
       if @password
         cookie = get_cookie
-        txid = rand(10000000000).to_s
 
         request = {
           'q' => 'auth',
@@ -103,7 +104,7 @@ module Cjdns
 
       # if no password is given, try request without auth
       else
-        request = { 'q' => funcname }
+        request = { 'q' => funcname, 'txid' => txid }
         request['args'] = args if args
       end
 
