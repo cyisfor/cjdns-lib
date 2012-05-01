@@ -85,7 +85,7 @@ module Cjdns
     private
 
     def auth_send(funcname, args = nil)
-      txid = rand(10000000000).to_s
+      txid = rand(36**8).to_s(36)
 
       # setup authenticated request if password given
       if @password
@@ -114,7 +114,7 @@ module Cjdns
     end
 
     def get_cookie
-      txid = rand(10000000000).to_s
+      txid = rand(36**8).to_s(36)
       response = send('q' => 'cookie', 'txid' => txid)
       raise 'wrong txid in reply' if response['txid'] and response['txid'] != txid
       response['cookie']
