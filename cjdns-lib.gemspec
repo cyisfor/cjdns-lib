@@ -19,4 +19,5 @@ Gem::Specification.new do |gem|
 
   # specify any dependencies here
   gem.add_runtime_dependency 'bencode'
+  gem.add_runtime_dependency 'ipaddress'
 end
