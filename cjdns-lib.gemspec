@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "cjdns-lib"
   gem.require_paths = ["lib"]
-  gem.version       = Cjdns::Lib::VERSION
+  gem.version       = CJDNS::Lib::VERSION
 
   gem.rubyforge_project = "cjdns-lib"
 

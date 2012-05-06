@@ -1,4 +1,4 @@
-# Cjdns::Lib
+# CJDNS Library
 
 ruby library to connect to the [cjdns](https://github.com/cjdelisle/cjdns)-admin interface.
 used by [cjdns-tool](https://github.com/kechagia/cjdns-tool)

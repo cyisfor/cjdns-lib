@@ -2,7 +2,7 @@ module CJDNS
   class Route
     attr_reader :path, :ip, :link, :quality, :routing_table
 
-    # @param [Cjdns::RoutingTable] routing_table
+    # @param [CJDNS::RoutingTable] routing_table
     # @param [String] ip
     # @param [String] path
     # @param [String] link

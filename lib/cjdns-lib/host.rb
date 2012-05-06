@@ -5,7 +5,7 @@ module CJDNS
     attr_reader :ip, :cjdns
 
     # @param [String] ip
-    # @param [Cjdns::Interface] cjdns
+    # @param [CJDNS::Interface] cjdns
     # @param [Hash] options options for CJDNS::Interface
     def initialize(ip, cjdns = nil, options = {})
       @ip = ip
@@ -72,7 +72,6 @@ module CJDNS
     # @param [Int] timeout
     # @return [Hash] { 'time' => [Int] response_time }
     # @return [Boolean] false if host is not replying
-    ### TODO
     def ping_cjdns(timeout = 1)
       time = @cjdns.ping_node(@ip, timeout * 1000)
       return false unless time

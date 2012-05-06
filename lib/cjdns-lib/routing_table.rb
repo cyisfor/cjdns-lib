@@ -10,7 +10,7 @@ module CJDNS
 
     attr_reader :routes, :hosts
 
-    # @param [Cjdns::Interface] cjdns
+    # @param [CJDNS::Interface] cjdns
     # @param [Hash] options options for CJDNS::Interface
     def initialize(cjdns = nil, options = {})
       # connect to cjdns socket, unless given

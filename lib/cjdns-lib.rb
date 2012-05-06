@@ -3,5 +3,5 @@ require 'cjdns-lib/routing_table'
 require 'cjdns-lib/hypedns'
 require 'cjdns-lib/version'
 
-module Cjdns
+module CJDNS
 end

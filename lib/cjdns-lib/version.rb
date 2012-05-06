@@ -1,4 +1,4 @@
-module Cjdns
+module CJDNS
   class Lib
     VERSION = "0.2.1"
   end
