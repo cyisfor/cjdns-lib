@@ -49,7 +49,7 @@ module CJDNS
         s = connect(80, timeout)
         return false unless s
 
-        s.write "GET / HTTP/1.1\r\nHost: [#{@ip}]\r\nConnection: close\r\n\r\n"
+        s.write "GET / HTTP/1.1\r\nHost: [#{@ip}]\r\nUser-Agent: cjdns-tool-#{CJDNS::Lib::VERSION}\r\nConnection: close\r\n\r\n"
 
         s.read.each_line do |line|
           line.force_encoding 'utf-8' unless RUBY_VERSION < '1.9'
