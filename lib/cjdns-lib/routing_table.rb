@@ -40,8 +40,9 @@ module CJDNS
     def get_routes(host = nil, max_hops = nil)
       routes = {}
       @routes.each do |r|
-        next if host and host != r.ip  # skip if not requested
-        next unless r.link > 0         # skip dead links
+        # skip if not requested (unshorten before test)
+        next if host and IPAddress::IPv6.new(host).address != r.ip
+        next unless r.link > 0 # skip dead links
         hops = r.get_hops
 
         # skip if not enough hops
