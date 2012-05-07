@@ -19,7 +19,7 @@ module CJDNS
 
       puts "connecting to #{options['host']}:#{options['port']}" if @debug
       @socket = TCPSocket.open(options['host'], options['port'])
-      raise "#{host}:#{port} doesn't appear to be a cjdns socket" unless ping_self
+      raise "#{options['host']}:#{options['port']} doesn't appear to be a cjdns socket" unless ping_self
     end
 
     # @return [Boolean] true if cjdns socket replies
