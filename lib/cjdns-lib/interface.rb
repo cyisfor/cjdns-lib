@@ -19,13 +19,14 @@ module CJDNS
 
       puts "connecting to #{options['host']}:#{options['port']}" if @debug
       @socket = TCPSocket.open(options['host'], options['port'])
-      raise "#{options['host']}:#{options['port']} doesn't appear to be a cjdns socket" unless ping_self
+
+      response = ping_self
+      raise "Error: #{response['error']}" unless response['q'] == 'pong'
     end
 
     # @return [Boolean] true if cjdns socket replies
     def ping_self
-      return false unless auth_send('ping')['q'] == 'pong'
-      true
+      auth_send('ping')
     end
 
     # @return [Int] bytes
