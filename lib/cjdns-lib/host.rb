@@ -107,7 +107,7 @@ module CJDNS
           return nil
         rescue Errno::EINVAL, Errno::EACCES
           # invalid argument errors or permission denied errors
-          # rise once in a while on the secoond connect, ignore
+          # rise once in a while on the second connect, ignore
         end
       end
       s
