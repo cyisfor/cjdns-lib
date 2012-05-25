@@ -31,15 +31,13 @@ module CJDNS
 
     # @return [Int] bytes
     def memory
-      return auth_send('memory')['bytes']
+      return auth_send('memory')
     end
 
     # @param [String] path to node
     # @param [Int] timeout
     def ping_node(path, timeout = 5000)
-      response = auth_send('RouterModule_pingNode', { 'path' => path, 'timeout' => timeout } )
-      return response['ms'] if response['result'] == 'pong'
-      false
+      auth_send('RouterModule_pingNode', { 'path' => path, 'timeout' => timeout } )
     end
 
     # @return [Hash] routing table
@@ -64,37 +62,34 @@ module CJDNS
     # @param [Int] timeout
     # @return [Boolean] true if path socket replies
     def ping_switch(path, data = 'x', timeout = 5000)
-      response = auth_send('SwitchPinger_ping', { 'path' => path,
-                                                  'data' => data,
-                                                  'timeout' => timeout } )
-
-      return response['ms'] if response['result'] == 'pong'
-      false
+      auth_send('SwitchPinger_ping', { 'path' => path,
+                                       'data' => data,
+                                       'timeout' => timeout } )
     end
 
     # @param [String] address
     # @return [Hash]
     def lookup(address)
-      return auth_send('RouterModule_lookup', { 'address' => address } )
+      auth_send('RouterModule_lookup', { 'address' => address } )
     end
 
     # @param [String] password
     # @param [Int] auth_type
     # @return [Hash]
     def authorized_passwords_add(password, auth_type = 1)
-      return auth_send('AuthorizedPasswords_add', { 'password' => password,
-                                                    'authType' => auth_type } )
+      auth_send('AuthorizedPasswords_add', { 'password' => password,
+                                             'authType' => auth_type } )
     end
 
     # @return [Hash]
     def authorized_passwords_flush
-      return auth_send('AuthorizedPasswords_flush')
+      auth_send('AuthorizedPasswords_flush')
     end
 
     # @param [String] xor_value
     # @return [Hash]
     def scramble_keys(xor_value)
-      return auth_send('UDPInterface_scrambleKeys', { 'xorValue' => xor_value } )
+      auth_send('UDPInterface_scrambleKeys', { 'xorValue' => xor_value } )
     end
 
     # @param [String] publicKey
@@ -102,9 +97,9 @@ module CJDNS
     # @param [String] password
     # @return [Hash]
     def begin_connection(public_key, address, password = nil)
-      return auth_send('UDPInterface_beginConnection', { 'publicKey' => public_key,
-                                                         'address' => address,
-                                                         'password' => password } )
+      auth_send('UDPInterface_beginConnection', { 'publicKey' => public_key,
+                                                  'address' => address,
+                                                  'password' => password } )
     end
 
 

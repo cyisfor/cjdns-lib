@@ -19,7 +19,7 @@ module CJDNS
     # TCP pings host (port 7)
     #
     # @param [Int] timeout
-    # @return [Hash] { 'time' => [Int] response_time }
+    # @return [Hash] { 'ms' => [Int] response_time }
     # @return [Boolean] false if host is not responding
     def ping_tcp(timeout = 5)
       start = Time.new
@@ -34,13 +34,13 @@ module CJDNS
         return false
       end
 
-      return { 'time' => (Time.new - start) * 1000 }
+      return { 'ms' => (Time.new - start) * 1000 }
     end
 
     # HTTP ping (port 80)
     #
     # @param [Int] timeout
-    # @return [Hash] { 'time' => [Int] response_time, 'title' => [String] html_title (if found) }
+    # @return [Hash] { 'ms' => [Int] response_time, 'title' => [String] html_title (if found) }
     # @return [Boolean] false if host is not replying to http
     def ping_http(timeout = 5)
       response = {}
@@ -64,19 +64,19 @@ module CJDNS
         return false
       end
 
-      response['time'] = (Time.new - start) * 1000
+      response['ms'] = (Time.new - start) * 1000
       return response
     end
 
     # cjdns internal ping
     #
     # @param [Int] timeout
-    # @return [Hash] { 'time' => [Int] response_time }
+    # @return [Hash] { 'ms' => [Int] response_time, 'version' => [String] cjdns_version }
     # @return [Boolean] false if host is not replying
     def ping_cjdns(timeout = 1)
-      time = @cjdns.ping_node(@ip, timeout * 1000)
-      return false unless time
-      return { 'time' => time }
+      response = @cjdns.ping_node(@ip, timeout * 1000)
+      return false unless response['result'] == 'pong'
+      response
     end
 
 
