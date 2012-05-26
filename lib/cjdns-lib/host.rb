@@ -83,9 +83,10 @@ module CJDNS
     # cjdns lookup
     #
     # @param [String] address
-    # return [Hash]
+    # return [Boolean]
     def lookup
-      @cjdns.lookup(@ip)
+      return true if @cjdns.lookup(@ip)['error'] == 'none'
+      false
     end
 
 
