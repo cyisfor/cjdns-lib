@@ -74,9 +74,18 @@ module CJDNS
     # @return [Hash] { 'ms' => [Int] response_time, 'version' => [String] cjdns_version }
     # @return [Boolean] false if host is not replying
     def ping_cjdns(timeout = 1)
+      lookup
       response = @cjdns.ping_node(@ip, timeout * 1000)
       return false unless response['result'] == 'pong'
       response
+    end
+
+    # cjdns lookup
+    #
+    # @param [String] address
+    # return [Hash]
+    def lookup
+      @cjdns.lookup(@ip)
     end
 
 
