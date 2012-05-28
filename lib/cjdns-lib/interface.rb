@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'bencode'
 require 'socket'
 require 'digest'
