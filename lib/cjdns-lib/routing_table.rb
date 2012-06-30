@@ -13,13 +13,12 @@ module CJDNS
     # @param [Hash] options options for CJDNS::Interface
     def initialize(cjdns = nil, options = {})
       # connect to cjdns socket, unless given
-      cjdns = CJDNS::Interface.new(options) unless cjdns
-      
-      routing_table = cjdns.dump_table
+      @cjdns = cjdns
+      @cjdns = CJDNS::Interface.new(options) unless @cjdns
 
       # populate routes
       @routes = []
-      routing_table.each do |route|
+      @cjdns.dump_table.each do |route|
         @routes << Route.new(self, route['ip'], route['path'], route['link'])
       end
 
@@ -35,7 +34,7 @@ module CJDNS
     # get all routes (for host)
     #
     # @param [String] host get routes to this host only
-    # @param [Int] max_hops onyl get routes with up to max_hops hops
+    # @param [Int] max_hops only get routes with up to max_hops hops
     def get_routes(host = nil, max_hops = nil)
       routes = {}
       @routes.each do |r|
@@ -53,6 +52,17 @@ module CJDNS
       end
 
       routes
+    end
+
+    # get all hosts
+    #
+    # @param [Int] max_hops only get hosts with up to max_hops hops
+    def get_hosts(max_hops = nil)
+      hosts = []
+      get_routes(nil, max_hops).each do |ip, route|
+        hosts << Host.new(ip, @cjdns) if hosts.select { |h| h.ip == ip }.empty?
+      end
+      hosts
     end
   end
 end
