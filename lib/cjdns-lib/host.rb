@@ -31,10 +31,9 @@ module CJDNS
         s = connect(port, timeout)
         return false unless s
 
-        # retrieve banner (if something is in the buffer)
-        if options['banner'] and IO.select([s], nil, nil, 1)
-          response['banner'] = s.recv(20) # receive up to 20 chars
-        end
+        # retrieve banner (up to 40 chars)
+        banner = s.recv(40) if IO.select([s], nil, nil, 1)
+        response['banner'] = banner.chomp if banner
 
         s.close
       rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, Errno::ECONNREFUSED, Errno::ENOTCONN
