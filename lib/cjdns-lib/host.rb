@@ -9,7 +9,8 @@ module CJDNS
     # @param [CJDNS::Interface] cjdns
     # @param [Hash] options options for CJDNS::Interface
     def initialize(ip, cjdns = nil, options = {})
-      @ip = IPAddress::IPv6.new(ip).address #unshorten
+      # unshort ip
+      @ip = IPAddress::IPv6.new(ip).address
 
       # connect to cjdns socket, unless given
       cjdns = CJDNS::Interface.new(options) unless cjdns
