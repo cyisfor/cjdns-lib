@@ -59,7 +59,16 @@ module CJDNS
     # @param [Int] max_hops only get hosts with up to max_hops hops
     def get_hosts(max_hops = nil)
       hosts = []
-      get_routes(nil, max_hops).each do |ip, route|
+
+      # get_routes takes a long time, only use it if max_hops is given
+      if max_hops and max_hops < 9999
+        routes = get_routes(nil, max_hops)
+      else
+        routes = {}
+        @routes.each { |r| routes[r.ip] ||= [] }
+      end
+
+      routes.each do |ip, route|
         hosts << Host.new(ip, @cjdns) if hosts.select { |h| h.ip == ip }.empty?
       end
       hosts
