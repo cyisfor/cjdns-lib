@@ -20,15 +20,15 @@ module CJDNS
     # checks if TCP port is open
     #
     # @param [Int] port
-    # @param [Hash] options
+    # @param [Int] timeout
     # @return [Hash] { 'ms' => [Int] response_time }
     # @return [Boolean] false if host is not responding or port is closed
-    def is_port_open?(port, options = { 'timeout' => 5, 'banner' => false })
+    def is_port_open?(port, timeout = 5)
       response = {}
       start = Time.new
 
       begin
-        s = connect(port, options['timeout'])
+        s = connect(port, timeout)
         return false unless s
 
         # retrieve banner (if something is in the buffer)
