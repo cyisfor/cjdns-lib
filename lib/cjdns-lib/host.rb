@@ -36,7 +36,7 @@ module CJDNS
         end
 
         s.close
-      rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, Errno::ECONNREFUSED
+      rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, Errno::ECONNREFUSED, Errno::ENOTCONN
         return false
       end
 
