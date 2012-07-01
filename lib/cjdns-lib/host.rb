@@ -16,6 +16,34 @@ module CJDNS
       @cjdns = cjdns
     end
 
+    # checks if TCP port is open
+    #
+    # @param [Int] port
+    # @param [Hash] options
+    # @return [Hash] { 'ms' => [Int] response_time }
+    # @return [Boolean] false if host is not responding or port is closed
+    def is_port_open?(port, options = { 'timeout' => 5, 'banner' => false })
+      response = {}
+      start = Time.new
+
+      begin
+        s = connect(port, options['timeout'])
+        return false unless s
+
+        # retrieve banner (if something is in the buffer)
+        if options['banner'] and IO.select([s], nil, nil, 1)
+          response['banner'] = s.recv(20) # receive up to 20 chars
+        end
+
+        s.close
+      rescue Errno::EHOSTUNREACH, Errno::ETIMEDOUT, Errno::ECONNREFUSED
+        return false
+      end
+
+      response['ms'] = (Time.new - start) * 1000
+      return response
+    end
+
     # TCP pings host (port 7)
     #
     # @param [Int] timeout
