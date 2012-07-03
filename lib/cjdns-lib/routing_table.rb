@@ -27,7 +27,7 @@ module CJDNS
       @routes.each do |r|
         next unless r.link > 0
         next unless @hosts.select { |h| h.ip == r.ip }.length == 0
-        @hosts << Host.new(r.ip, cjdns)
+        @hosts << Host.new(r.ip, @cjdns)
       end
     end
 
