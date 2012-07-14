@@ -5,10 +5,7 @@ module CJDNS
   class HypeDNS
 
     # @param [String] nameserver (either ip, or 'via_internet' / 'via_cjdns' to use default)
-    def initialize(nameserver = 'via_cjdns')
-      nameserver = '216.150.225.240' if nameserver == 'via_internet'
-      nameserver = 'fc5d:baa5:61fc:6ffd:9554:67f0:e290:7535' if nameserver == 'via_cjdns'
-      
+    def initialize(nameserver = 'fc5d:baa5:61fc:6ffd:9554:67f0:e290:7535')
       @hypedns = Resolv::DNS.new(:nameserver => nameserver)
     end
 
