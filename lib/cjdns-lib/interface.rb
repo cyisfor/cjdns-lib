@@ -1,6 +1,7 @@
 require 'bencode'
 require 'socket'
 require 'digest'
+require 'json'
 
 module CJDNS
   class Interface
@@ -11,7 +12,12 @@ module CJDNS
     # @option options [Boolean] debug
     # @raise [RuntimeError] if socket is not a valid cjdns socket
     def initialize(options = {})
-      options = { 'host' => 'localhost', 'port' => 11234, 'password' => nil, 'debug' => false }.merge options
+
+      # use configuration file if given
+      options = parse_configfile(options['config-file']).merge(options) if options['config-file']
+
+      # default options
+      options = { 'host' => 'localhost', 'port' => 11234, 'password' => nil, 'debug' => false }.merge(options)
 
       @password = options['password']
       @debug = options['debug']
@@ -103,6 +109,30 @@ module CJDNS
 
 
     private
+
+    # automatically gets host, port and password from cjdroute configuration file
+    #
+    # @param [String, Array] conf configuration file(s)
+    # @return [Hash] { 'host' => host, 'port' => port, 'password' => password }
+    # @raise [RuntimeError] 'could not open configuration file'
+    def parse_configfile(conf = [ '/etc/cjdns/cjdroute.conf', '/etc/cjdroute.conf', './cjdroute.conf' ])
+      conf = Array(conf)
+
+      conf.each do |file|
+        next unless File.exists? file
+
+        begin
+          admin = JSON.parse(File.open(file).read)['admin']
+        rescue JSON::ParserError
+          raise "failed to parse configuration file. does '#{file}' contain valid json?"
+        end
+
+        host, port = admin['bind'].split(':')
+        return { 'host' => host, 'port' => port, 'password' => admin['password'] }
+      end
+
+      raise "could't find neither of those configuration files: #{conf.join(', ')}"
+    end
 
     # send an authenticated 'funcname' request to the admin interface
     #
