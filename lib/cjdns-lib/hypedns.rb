@@ -51,6 +51,19 @@ module CJDNS
       end
     end
 
+    # try if hypedns is responding by trying to resolv 'nodeinfo.hype'
+    #
+    # @return [Boolean] true if hypedns is working, false if not
+    def try(host = 'nodeinfo.hype')
+      begin
+        Timeout::timeout(5) do
+          return aaaa(host)
+        end
+      rescue Timeout::Error
+        return false
+      end
+    end
+
   end
 end
 
