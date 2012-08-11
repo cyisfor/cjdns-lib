@@ -3,10 +3,12 @@ require 'ipaddress'
 
 module CJDNS
   class HypeDNS
+    attr_reader :nameserver
 
     # @param [String] nameserver (either ip, or 'via_internet' / 'via_cjdns' to use default)
     def initialize(nameserver = 'fc5d:baa5:61fc:6ffd:9554:67f0:e290:7535')
-      @hypedns = Resolv::DNS.new(:nameserver => nameserver)
+      @nameserver = nameserver
+      @hypedns = Resolv::DNS.new(:nameserver => @nameserver)
     end
 
     # get AAAA (ipv6) record of host
