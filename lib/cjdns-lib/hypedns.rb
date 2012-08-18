@@ -33,7 +33,7 @@ module CJDNS
     def ptr(ip)
       begin
         return @hypedns.getname(ip).to_s
-      rescue Resolv::ResolvError, SocketErroir
+      rescue Resolv::ResolvError, SocketError
         return nil
       end
     end
