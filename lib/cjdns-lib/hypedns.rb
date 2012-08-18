@@ -9,6 +9,7 @@ module CJDNS
 
     # @param [String] nameserver (either ip, or 'via_internet' / 'via_cjdns' to use default)
     def initialize(nameserver = 'fc5d:baa5:61fc:6ffd:9554:67f0:e290:7535')
+      @cache = {}
       @nameserver = nameserver
       @hypedns = Resolv::DNS.new(:nameserver => @nameserver)
       raise HypeDNSError, "#{nameserver} is not a valid hypedns nameserver" unless try
@@ -19,8 +20,13 @@ module CJDNS
     # @param [String] host
     # @return [String] ip, nil on failure
     def aaaa(host)
+      # use cache if host was already resolved
+      return @cache[host] if @cache[host]
+
       begin
-        @hypedns.getresource(host, Resolv::DNS::Resource::IN::AAAA).address.to_s.downcase
+        address = @hypedns.getresource(host, Resolv::DNS::Resource::IN::AAAA).address.to_s.downcase
+        @cache[host] = address
+        return address
       rescue Resolv::ResolvError, SocketError
         return nil
       end
@@ -31,8 +37,13 @@ module CJDNS
     # @param [String] ip
     # @return [String] host, nil on failure
     def ptr(ip)
+      # use cache if ip was already resolved
+      return @cache[ip] if @cache[ip]
+
       begin
-        return @hypedns.getname(ip).to_s
+        name = @hypedns.getname(ip).to_s
+        @cache[ip] = name
+        return name
       rescue Resolv::ResolvError, SocketError
         return nil
       end
