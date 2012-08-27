@@ -81,7 +81,7 @@ module CJDNS
         s.write "GET / HTTP/1.1\r\nHost: [#{@ip}]\r\nUser-Agent: cjdns-tool-#{CJDNS::Lib::VERSION}\r\nConnection: close\r\n\r\n"
 
         s.read.each_line do |line|
-          line.force_encoding('utf-8')
+          line.force_encoding('utf-8') unless RUBY_VERSION < '1.9'
           if md = line.match(/<title>\s*(.*)\s*<\/title>/iu)
             response['title'] = md[1]
           end
