@@ -121,11 +121,11 @@ module CJDNS
       conf.each do |file|
         next unless File.exists? file
 
-        begin
+#        begin
           admin = JSON.parse(File.open(file).read)['admin']
-        rescue JSON::ParserError
-          raise "failed to parse configuration file. does '#{file}' contain valid json?"
-        end
+#        rescue JSON::ParserError
+#          raise "failed to parse configuration file. does '#{file}' contain valid json?"
+#        end
 
         host, port = admin['bind'].split(':')
         return { 'host' => host, 'port' => port, 'password' => admin['password'] }
